@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Games - Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+    
+    <div class="container">
+        <h1>Games Library</h1>
+        <div class="games-grid">
+            <% if (games && games.length > 0) { %>
+                <% games.forEach(game => { %>
+                    <div class="game-card">
+                        <% if (game.imageUrl) { %>
+                            <img src="<%= game.imageUrl %>" alt="<%= game.title %>">
+                        <% } %>
+                        <h3><%= game.title %></h3>
+                        <p>Platform: <%= game.platform %></p>
+                        <p>Total Achievements: <%= game.totalAchievements %></p>
+                        <a href="/games/<%= game._id %>" class="btn">View Details</a>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No games found. Add some games to get started!</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html> 
