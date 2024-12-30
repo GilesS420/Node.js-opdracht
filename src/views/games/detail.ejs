@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= game.title %> - Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('../partials/nav') %>
+    
+    <div class="container">
+        <div class="game-details">
+            <div class="header-actions">
+                <h1><%= game.title %></h1>
+                <div class="action-buttons">
+                    <a href="/games/<%= game._id %>/edit" class="btn btn-edit">Edit Game</a>
+                    <form action="/games/<%= game._id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete Game</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="game-info">
+                <div class="game-image-section">
+                    <% if (game.imageUrl) { %>
+                        <div class="game-image">
+                            <img src="<%= game.imageUrl %>" alt="<%= game.title %>">
+                        </div>
+                    <% } %>
+                    <div class="game-description">
+                        <h3>Description:</h3>
+                        <p><%= game.description || 'No description available.' %></p>
+                    </div>
+                </div>
+                
+                <div class="game-meta">
+                    <div class="info-group">
+                        <h3>Platforms:</h3>
+                        <div class="platform-tags">
+                            <% game.platform.forEach(platform => { %>
+                                <span class="tag"><%= platform %></span>
+                            <% }) %>
+                        </div>
+                    </div>
+
+                    <div class="info-group">
+                        <h3>Genre:</h3>
+                        <div class="genre-tags">
+                            <% game.genre.forEach(g => { %>
+                                <span class="tag"><%= g %></span>
+                            <% }) %>
+                        </div>
+                    </div>
+
+                    <div class="info-group">
+                        <h3>Release Date:</h3>
+                        <p><%= game.releaseDate ? new Date(game.releaseDate).toLocaleDateString() : 'Not specified' %></p>
+                    </div>
+
+                    <div class="info-group">
+                        <h3>Total Achievements:</h3>
+                        <p><%= game.totalAchievements %></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievements-section">
+                <h2>Achievements</h2>
+                <% if (achievements && achievements.length > 0) { %>
+                    <div class="achievements-grid">
+                        <% achievements.forEach(achievement => { %>
+                            <div class="achievement-card">
+                                <h3><%= achievement.name %></h3>
+                                <p><%= achievement.description %></p>
+                                <div class="achievement-meta">
+                                    <span class="points">Points: <%= achievement.points %></span>
+                                    <span class="difficulty <%= achievement.difficulty.toLowerCase() %>">
+                                        <%= achievement.difficulty %>
+                                    </span>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p>No achievements added yet.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

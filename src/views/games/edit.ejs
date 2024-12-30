@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Game - Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <%- include('../partials/nav') %>
+    
+    <div class="container">
+        <h1>Edit Game: <%= game.title %></h1>
+        <form action="/games/<%= game._id %>?_method=PUT" method="POST" class="form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" value="<%= game.title %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="platform">Platform:</label>
+                <select id="platform" name="platform" multiple required>
+                    <option value="PC" <%= game.platform.includes('PC') ? 'selected' : '' %>>PC</option>
+                    <option value="PlayStation 5" <%= game.platform.includes('PlayStation 5') ? 'selected' : '' %>>PlayStation 5</option>
+                    <option value="PlayStation 4" <%= game.platform.includes('PlayStation 4') ? 'selected' : '' %>>PlayStation 4</option>
+                    <option value="Xbox Series X/S" <%= game.platform.includes('Xbox Series X/S') ? 'selected' : '' %>>Xbox Series X/S</option>
+                    <option value="Xbox One" <%= game.platform.includes('Xbox One') ? 'selected' : '' %>>Xbox One</option>
+                    <option value="Nintendo Switch" <%= game.platform.includes('Nintendo Switch') ? 'selected' : '' %>>Nintendo Switch</option>
+                    <option value="Mobile" <%= game.platform.includes('Mobile') ? 'selected' : '' %>>Mobile</option>
+                </select>
+                <small>Hold Ctrl/Cmd to select multiple platforms</small>
+            </div>
+
+            <div class="form-group">
+                <label for="genre">Genre:</label>
+                <input type="text" id="genre" name="genre" value="<%= game.genre.join(', ') %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Enter game description"><%= game.description || '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="gameImage">Game Image:</label>
+                <% if (game.imageUrl) { %>
+                    <img src="<%= game.imageUrl %>" alt="Current game image" style="max-width: 200px; margin: 10px 0;">
+                <% } %>
+                <input type="file" id="gameImage" name="gameImage" accept="image/*">
+                <small>Leave empty to keep current image</small>
+            </div>
+
+            <div class="form-group">
+                <label for="releaseDate">Release Date:</label>
+                <input type="date" id="releaseDate" name="releaseDate" 
+                    value="<%= game.releaseDate ? game.releaseDate.toISOString().split('T')[0] : '' %>">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-edit">Update Game</button>
+                <a href="/games/<%= game._id %>" class="btn btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#platform').select2({
+                placeholder: "Select platforms",
+                allowClear: true,
+                tags: true
+            });
+        });
+    </script>
+</body>
+</html> 

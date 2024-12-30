@@ -19,7 +19,8 @@ const gameSchema = new mongoose.Schema({
     default: 0
   },
   imageUrl: String,
-  releaseDate: Date
+  releaseDate: Date,
+  description: { type: String }
 }, {
   timestamps: true
 });

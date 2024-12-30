@@ -50,7 +50,7 @@ body {
 } 
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     padding: 1rem;
 }
@@ -58,33 +58,107 @@ body {
 .game-card {
     background: white;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1.5rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 300px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .game-card img {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
     border-radius: 4px;
+    margin-bottom: 1rem;
 }
 
 .game-card h3 {
     margin: 1rem 0;
+    font-size: 1.2rem;
+}
+
+.game-card p {
+    margin: 0.5rem 0;
+    color: #666;
 }
 
 .btn {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    background: #333;
-    color: white;
+    padding: 8px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
     text-decoration: none;
-    border-radius: 4px;
-    margin-top: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 5px;
+    min-width: 100px;
+    text-align: center;
+    height: 36px;
+    line-height: 20px;
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: #2da1cb;
+    color: white;
+}
+
+.btn-details {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn-details:hover {
+    background-color: #1976D2;
+}
+
+.btn-edit {
+    background-color: #007404;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #004603;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+.card-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+    padding-top: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-card .btn {
+    min-width: 100px;
+    text-align: center;
 }
 
 .btn:hover {
-    background: #444;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .achievements-grid {
@@ -198,20 +272,6 @@ body {
     border-radius: 4px;
 }
 
-.btn-edit {
-    background: #2196F3;
-}
-
-.btn-delete {
-    background: #F44336;
-}
-
-.card-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
 .form-group select {
     width: 100%;
     padding: 0.5rem;
@@ -262,4 +322,235 @@ body {
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
     color: #ff4444;
+}
+
+@media (max-width: 768px) {
+    .games-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .game-card {
+        min-height: 250px;
+    }
+}
+
+/* Game Details Page Styling */
+.game-details {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.game-info {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.game-image {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.game-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.game-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-group {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #2196F3;
+}
+
+.info-group h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.platform-tags, .genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: #2196F3;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(33,150,243,0.2);
+}
+
+.achievements-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.achievements-section h2 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 1.8rem;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.achievement-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 4px solid #4CAF50;
+    transition: transform 0.2s;
+}
+
+.achievement-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.achievement-card h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.points {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.difficulty {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.easy { background: #4CAF50; color: white; }
+.medium { background: #FFC107; color: black; }
+.hard { background: #F44336; color: white; }
+.expert { background: #9C27B0; color: white; }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .game-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-image {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .game-details {
+        padding: 1rem;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Description field styling */
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+.game-description {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #2196F3;
+}
+
+.game-description h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.game-description p {
+    line-height: 1.6;
+    color: #4a4a4a;
+}
+
+.game-image-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Form actions styling */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
 }

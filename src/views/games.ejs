@@ -24,7 +24,7 @@
                         <p>Platform: <%= game.platform %></p>
                         <p>Total Achievements: <%= game.totalAchievements %></p>
                         <div class="card-actions">
-                            <a href="/games/<%= game._id %>" class="btn">View Details</a>
+                            <a href="/games/<%= game._id %>" class="btn">Details</a>
                             <a href="/games/<%= game._id %>/edit" class="btn btn-edit">Edit</a>
                             <form action="/games/<%= game._id %>?_method=DELETE" method="POST" style="display: inline;">
                                 <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>

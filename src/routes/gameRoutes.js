@@ -74,7 +74,8 @@ router.post('/', upload.single('gameImage'), async (req, res) => {
             platform: Array.isArray(req.body.platform) ? req.body.platform : [req.body.platform], // Ensure platform is an array
             genre: req.body.genre,
             imageUrl: req.file ? `/uploads/${req.file.filename}` : '',
-            releaseDate: req.body.releaseDate
+            releaseDate: req.body.releaseDate,
+            description: req.body.description
         };
         
         console.log('Game data to save:', gameData);  // Log the processed data
@@ -96,8 +97,9 @@ router.get('/:id', async (req, res) => {
     try {
         const game = await Game.findById(req.params.id);
         const achievements = await Achievement.find({ game: req.params.id });
-        res.render('games/show', { game, achievements });
+        res.render('games/detail', { game, achievements });
     } catch (error) {
+        console.error('Error fetching game details:', error);
         res.redirect('/games');
     }
 });
@@ -113,11 +115,35 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 // Update game
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('gameImage'), async (req, res) => {
     try {
-        await Game.findByIdAndUpdate(req.params.id, req.body);
-        res.redirect('/games');
+        const game = await Game.findById(req.params.id);
+        
+        // Prepare update data
+        const updateData = {
+            title: req.body.title,
+            platform: Array.isArray(req.body.platform) ? req.body.platform : [req.body.platform],
+            genre: req.body.genre.split(',').map(g => g.trim()),
+            releaseDate: req.body.releaseDate,
+            description: req.body.description
+        };
+
+        // If a new image was uploaded
+        if (req.file) {
+            // Delete old image if it exists
+            if (game.imageUrl) {
+                const oldImagePath = path.join(__dirname, '../..', 'public', game.imageUrl);
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath);
+                }
+            }
+            updateData.imageUrl = `/uploads/${req.file.filename}`;
+        }
+
+        await Game.findByIdAndUpdate(req.params.id, updateData);
+        res.redirect(`/games/${req.params.id}`);
     } catch (error) {
+        console.error('Error updating game:', error);
         res.redirect('/games');
     }
 });
