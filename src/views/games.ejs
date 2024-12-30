@@ -8,7 +8,11 @@
     <%- include('partials/nav') %>
     
     <div class="container">
-        <h1>Games Library</h1>
+        <div class="header-actions">
+            <h1>Games Library</h1>
+            <a href="/games/newGame" class="btn">Add New Game</a>
+        </div>
+        
         <div class="games-grid">
             <% if (games && games.length > 0) { %>
                 <% games.forEach(game => { %>
@@ -19,7 +23,13 @@
                         <h3><%= game.title %></h3>
                         <p>Platform: <%= game.platform %></p>
                         <p>Total Achievements: <%= game.totalAchievements %></p>
-                        <a href="/games/<%= game._id %>" class="btn">View Details</a>
+                        <div class="card-actions">
+                            <a href="/games/<%= game._id %>" class="btn">View Details</a>
+                            <a href="/games/<%= game._id %>/edit" class="btn btn-edit">Edit</a>
+                            <form action="/games/<%= game._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 <% }); %>
             <% } else { %>
