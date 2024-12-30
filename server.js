@@ -26,10 +26,12 @@ mongoose.connect('mongodb+srv://sct:iS8HtDdXKHyfjahI@cluster0.mg20q.mongodb.net/
 const userRoutes = require('./src/routes/userRoutes');
 const gameRoutes = require('./src/routes/gameRoutes');
 const achievementRoutes = require('./src/routes/achievementRoutes');
+const apiRoutes = require('./src/routes/apiRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/games', gameRoutes);
 app.use('/achievements', achievementRoutes);
+app.use('/', apiRoutes);
 
 // Add view engine setup
 app.set('view engine', 'ejs');

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Documentation - Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+    
+    <div class="container api-docs">
+        <h1>API Documentation</h1>
+        
+        <section class="endpoint">
+            <h2>Games Endpoints</h2>
+            <div class="endpoint-item">
+                <h3>GET /api/games</h3>
+                <p>Get a list of games with pagination</p>
+                <p>Query Parameters:</p>
+                <ul>
+                    <li><code>limit</code> - Number of games to return (default: 10)</li>
+                    <li><code>offset</code> - Number of games to skip (default: 0)</li>
+                </ul>
+                <p>Example: <code>/api/games?limit=5&offset=10</code></p>
+            </div>
+        </section>
+
+        <section class="endpoint">
+            <h2>Achievements Endpoints</h2>
+            <div class="endpoint-item">
+                <h3>GET /api/achievements/search</h3>
+                <p>Search achievements by name or difficulty</p>
+                <p>Query Parameters:</p>
+                <ul>
+                    <li><code>name</code> - Search by achievement name</li>
+                    <li><code>difficulty</code> - Filter by difficulty (Easy, Medium, Hard, Expert)</li>
+                    <li><code>points</code> - Filter by points value</li>
+                </ul>
+                <p>Example: <code>/api/achievements/search?difficulty=Hard&points=15</code></p>
+            </div>
+        </section>
+    </div>
+</body>
+</html> 
