@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements - Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/nav') %>
+    
+    <div class="container">
+        <h1>Achievements List</h1>
+        <div class="achievements-grid">
+            <% if (achievements && achievements.length > 0) { %>
+                <% achievements.forEach(achievement => { %>
+                    <div class="achievement-card">
+                        <div class="achievement-header">
+                            <h3><%= achievement.name %></h3>
+                            <span class="difficulty <%= achievement.difficulty.toLowerCase() %>">
+                                <%= achievement.difficulty %>
+                            </span>
+                        </div>
+                        <p class="description"><%= achievement.description %></p>
+                        <div class="achievement-footer">
+                            <span class="points">Points: <%= achievement.points %></span>
+                            <% if (achievement.game) { %>
+                                <span class="game-name">Game: <%= achievement.game.title %></span>
+                            <% } %>
+                            <span class="rarity">Rarity: <%= achievement.rarity %>%</span>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No achievements found yet.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html> 

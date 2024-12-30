@@ -19,12 +19,10 @@ mongoose.connect('mongodb+srv://sct:iS8HtDdXKHyfjahI@cluster0.mg20q.mongodb.net/
 
 // Routes
 const userRoutes = require('./src/routes/userRoutes');
-const postRoutes = require('./src/routes/postRoutes');
 const gameRoutes = require('./src/routes/gameRoutes');
 const achievementRoutes = require('./src/routes/achievementRoutes');
 
 app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
 app.use('/games', gameRoutes);
 app.use('/achievements', achievementRoutes);
 
