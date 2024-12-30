@@ -22,6 +22,50 @@
                 </ul>
                 <p>Example: <code>/api/games?limit=5&offset=10</code></p>
             </div>
+
+            <div class="endpoint-item">
+                <h3>GET /games</h3>
+                <p>View all games in the library</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>GET /games/new</h3>
+                <p>Display form to add a new game</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>POST /games</h3>
+                <p>Create a new game</p>
+                <p>Form Data:</p>
+                <ul>
+                    <li><code>title</code> - Game title</li>
+                    <li><code>platform</code> - Gaming platform(s)</li>
+                    <li><code>genre</code> - Game genre(s)</li>
+                    <li><code>description</code> - Game description</li>
+                    <li><code>gameImage</code> - Game image file</li>
+                    <li><code>releaseDate</code> - Game release date</li>
+                </ul>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>GET /games/:id</h3>
+                <p>View details of a specific game</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>GET /games/:id/edit</h3>
+                <p>Display form to edit a game</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>PUT /games/:id</h3>
+                <p>Update a specific game</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>DELETE /games/:id</h3>
+                <p>Delete a specific game</p>
+            </div>
         </section>
 
         <section class="endpoint">
@@ -33,9 +77,47 @@
                 <ul>
                     <li><code>name</code> - Search by achievement name</li>
                     <li><code>difficulty</code> - Filter by difficulty (Easy, Medium, Hard, Expert)</li>
-                    <li><code>points</code> - Filter by points value</li>
+                    <li><code>points</code> - Filter by points value (5-20)</li>
                 </ul>
                 <p>Example: <code>/api/achievements/search?difficulty=Hard&points=15</code></p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>GET /achievements</h3>
+                <p>View all achievements</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>GET /achievements/new/:gameId</h3>
+                <p>Display form to add a new achievement to a game</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>POST /achievements/:gameId</h3>
+                <p>Create a new achievement</p>
+                <p>Form Data:</p>
+                <ul>
+                    <li><code>name</code> - Achievement name</li>
+                    <li><code>description</code> - Achievement description</li>
+                    <li><code>points</code> - Points value (5-20)</li>
+                    <li><code>difficulty</code> - Difficulty level</li>
+                    <li><code>achievementImage</code> - Achievement image file</li>
+                </ul>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>GET /achievements/:id/edit</h3>
+                <p>Display form to edit an achievement</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>PUT /achievements/:id</h3>
+                <p>Update a specific achievement</p>
+            </div>
+
+            <div class="endpoint-item">
+                <h3>DELETE /achievements/:id</h3>
+                <p>Delete a specific achievement</p>
             </div>
         </section>
     </div>
