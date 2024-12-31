@@ -47,47 +47,38 @@ router.get('/', async (req, res) => {
 
 // Show create form - THIS MUST COME BEFORE THE /:id ROUTE
 router.get('/newGame', (req, res) => {
-    try {
-        console.log('Attempting to render newGame form');
-        console.log('Views directory:', req.app.get('views')); // Log the views directory path
-        res.render('games/newGame', (err, html) => {
-            if (err) {
-                console.error('Error rendering template:', err);
-                return res.status(500).send(err.message);
-            }
-            res.send(html);
-        });
-    } catch (error) {
-        console.error('Error in newGame route:', error);
-        res.status(500).send('Error loading the new game form');
-    }
+    res.render('games/newGame', { error: null, game: {} });
 });
 
 // Create new game with file upload
 router.post('/', upload.single('gameImage'), async (req, res) => {
     try {
-        console.log('Form data received:', req.body);  // Log the form data
-        console.log('File uploaded:', req.file);      // Log the uploaded file
+        // Check for existing game with same title
+        const existingGame = await Game.findOne({ title: req.body.title });
+        if (existingGame) {
+            // Render the form again with error message and previous input
+            return res.render('games/newGame', {
+                error: 'A game with this title already exists',
+                game: req.body
+            });
+        }
 
         const gameData = {
             title: req.body.title,
-            platform: Array.isArray(req.body.platform) ? req.body.platform : [req.body.platform], // Ensure platform is an array
+            platform: req.body.platform,
+            description: req.body.description,
             genre: req.body.genre,
-            imageUrl: req.file ? `/uploads/${req.file.filename}` : '',
             releaseDate: req.body.releaseDate,
-            description: req.body.description
+            imageUrl: req.file ? `/uploads/games/${req.file.filename}` : ''
         };
-        
-        console.log('Game data to save:', gameData);  // Log the processed data
 
         const game = new Game(gameData);
         await game.save();
-        console.log('Game saved successfully:', game);  // Log the saved game
         res.redirect('/games');
     } catch (error) {
-        console.error('Error creating game:', error);
-        res.render('games/newGame', { 
-            error: error.message
+        res.render('games/newGame', {
+            error: error.message,
+            game: req.body
         });
     }
 });

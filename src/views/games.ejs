@@ -10,6 +10,11 @@
     <div class="container">
         <div class="header-actions">
             <h1>Games Library</h1>
+            <div class="pagination">
+                <button id="prevPage" class="btn">Previous</button>
+                <span id="pageInfo">Page 1</span>
+                <button id="nextPage" class="btn">Next</button>
+            </div>
             <a href="/games/newGame" class="btn">Add New Game</a>
         </div>
         
@@ -37,5 +42,66 @@
             <% } %>
         </div>
     </div>
+
+    <script>
+        let currentPage = 1;
+        const gamesPerPage = 6;
+
+        async function loadGames(page) {
+            const offset = (page - 1) * gamesPerPage;
+            try {
+                const response = await fetch(`/api/games?limit=${gamesPerPage}&offset=${offset}`);
+                const data = await response.json();
+                
+                const container = document.querySelector('.games-grid');
+                
+                if (data.games && data.games.length > 0) {
+                    container.innerHTML = data.games.map(game => `
+                        <div class="game-card">
+                            <div class="game-image">
+                                ${game.imageUrl ? `<img src="${game.imageUrl}" alt="${game.title}" style="max-width: 100%; height: auto;">` : ''}
+                            </div>
+                            <h3>${game.title}</h3>
+                            <p>Platform: ${game.platform}</p>
+                            <p>Total Achievements: ${game.totalAchievements}</p>
+                            <div class="card-actions">
+                                <a href="/games/${game._id}" class="btn">Details</a>
+                                <a href="/games/${game._id}/edit" class="btn btn-edit">Edit</a>
+                                <form action="/games/${game._id}?_method=DELETE" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p>No games found. Add some games to get started!</p>';
+                }
+
+                // Update pagination buttons
+                document.getElementById('prevPage').disabled = page === 1;
+                document.getElementById('nextPage').disabled = data.games.length < gamesPerPage;
+                document.getElementById('pageInfo').textContent = `Page ${page}`;
+
+            } catch (error) {
+                console.error('Error loading games:', error);
+            }
+        }
+
+        // Event listeners for pagination buttons
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                loadGames(currentPage);
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            currentPage++;
+            loadGames(currentPage);
+        });
+
+        // Load initial page
+        loadGames(1);
+    </script>
 </body>
 </html> 

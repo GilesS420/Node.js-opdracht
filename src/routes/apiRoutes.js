@@ -11,14 +11,21 @@ router.get('/', (req, res) => {
 // Get games with limit and offset
 router.get('/api/games', async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 6;
         const offset = parseInt(req.query.offset) || 0;
         
         const games = await Game.find()
             .skip(offset)
             .limit(limit)
-            .select('title platform totalAchievements');
+            .lean();  // Convert to plain JavaScript objects
         
+        // Ensure imageUrl is complete
+        games.forEach(game => {
+            if (game.imageUrl && !game.imageUrl.startsWith('http')) {
+                game.imageUrl = game.imageUrl; // The imageUrl should already be correct from the database
+            }
+        });
+
         const total = await Game.countDocuments();
         
         res.json({
@@ -28,6 +35,7 @@ router.get('/api/games', async (req, res) => {
             offset
         });
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ error: error.message });
     }
 });

@@ -12,10 +12,18 @@
     
     <div class="container">
         <h1>Add New Game</h1>
+
+        <!-- Add error message display -->
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+        <% } %>
+
         <form action="/games" method="POST" class="form" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title" value="<%= typeof game !== 'undefined' ? game.title : '' %>" required>
             </div>
 
             <div class="form-group">
@@ -34,7 +42,7 @@
 
             <div class="form-group">
                 <label for="genre">Genre:</label>
-                <input type="text" id="genre" name="genre" required>
+                <input type="text" id="genre" name="genre" value="<%= typeof game !== 'undefined' ? game.genre : '' %>" required>
             </div>
 
             <div class="form-group">
@@ -44,12 +52,12 @@
 
             <div class="form-group">
                 <label for="releaseDate">Release Date:</label>
-                <input type="date" id="releaseDate" name="releaseDate">
+                <input type="date" id="releaseDate" name="releaseDate" value="<%= typeof game !== 'undefined' ? game.releaseDate : '' %>">
             </div>
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4" placeholder="Enter game description"></textarea>
+                <textarea id="description" name="description" rows="4" placeholder="Enter game description"><%= typeof game !== 'undefined' ? game.description : '' %></textarea>
             </div>
 
             <button type="submit" class="btn">Add Game</button>
