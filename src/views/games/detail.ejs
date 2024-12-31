@@ -64,7 +64,10 @@
             </div>
 
             <div class="achievements-section">
-                <h2>Achievements</h2>
+                <div class="achievements-header">
+                    <h2>Achievements</h2>
+                    <a href="/achievements/new/<%= game._id %>" class="btn btn-add">Add Achievement</a>
+                </div>
                 <% if (achievements && achievements.length > 0) { %>
                     <div class="achievements-grid">
                         <% achievements.forEach(achievement => { %>

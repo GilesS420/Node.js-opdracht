@@ -5,9 +5,10 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f5f5;
 }
 
 .nav-wrapper {
@@ -37,8 +38,8 @@ body {
 }
 
 .container {
-    width: 80%;
-    margin: auto;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem;
 }
 
@@ -553,4 +554,194 @@ body {
 
 .btn-cancel:hover {
     background-color: #5a6268;
+}
+
+/* Achievement styles */
+.achievements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.achievement-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.achievement-card img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.achievement-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.difficulty {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.difficulty.easy { background: #4CAF50; color: white; }
+.difficulty.medium { background: #FFC107; color: black; }
+.difficulty.hard { background: #F44336; color: white; }
+.difficulty.expert { background: #9C27B0; color: white; }
+
+/* Achievements index page styling */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.achievement-card .game-title {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.achievement-card .game-title a {
+    color: #2196F3;
+    text-decoration: none;
+}
+
+.achievement-card .game-title a:hover {
+    text-decoration: underline;
+}
+
+/* Navigation styles */
+nav {
+    background-color: #333;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-brand a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.nav-links a:hover {
+    background-color: #444;
+}
+
+/* Difficulty selection styling */
+.difficulty-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.difficulty-option {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.difficulty-option input[type="radio"] {
+    display: none;
+}
+
+.difficulty-option .difficulty {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background: #f0f0f0;  /* Light gray background for all */
+    color: #333;         /* Dark text for all */
+    border: 2px solid #ddd;
+}
+
+.difficulty-option input[type="radio"]:checked + .difficulty {
+    background: #2196F3;  /* Blue background when selected */
+    color: white;
+    border-color: #2196F3;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Hover effect */
+.difficulty-option:hover .difficulty {
+    background: #e0e0e0;  /* Slightly darker on hover */
+    transform: translateY(-1px);
+}
+
+.difficulty-option input[type="radio"]:checked:hover + .difficulty {
+    background: #1976D2;  /* Darker blue on hover when selected */
+}
+
+/* API Documentation styles */
+.api-docs {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.endpoint {
+    margin-bottom: 3rem;
+}
+
+.endpoint-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-left: 4px solid #2196F3;
+}
+
+.endpoint-item h3 {
+    color: #2196F3;
+    margin-bottom: 1rem;
+}
+
+.endpoint-item code {
+    background: #e9ecef;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.endpoint-item ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.endpoint-item li {
+    margin: 0.5rem 0;
 }

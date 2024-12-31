@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Achievements - Achievement Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('../partials/nav') %>
+    
+    <div class="container">
+        <h1>All Achievements</h1>
+        
+        <div class="achievements-grid">
+            <% if (achievements && achievements.length > 0) { %>
+                <% achievements.forEach(achievement => { %>
+                    <div class="achievement-card">
+                        <% if (achievement.imageUrl) { %>
+                            <img src="<%= achievement.imageUrl %>" alt="<%= achievement.name %>">
+                        <% } %>
+                        <h3><%= achievement.name %></h3>
+                        <p><%= achievement.description %></p>
+                        <div class="achievement-meta">
+                            <span class="game-title">Game: <a href="/games/<%= achievement.game._id %>"><%= achievement.game.title %></a></span>
+                            <span class="points">Points: <%= achievement.points %></span>
+                            <span class="difficulty <%= achievement.difficulty.toLowerCase() %>">
+                                <%= achievement.difficulty %>
+                            </span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="/achievements/<%= achievement._id %>/edit" class="btn btn-edit">Edit</a>
+                            <form action="/achievements/<%= achievement._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No achievements found.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html> 
