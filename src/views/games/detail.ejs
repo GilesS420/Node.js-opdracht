@@ -36,18 +36,24 @@
                     <div class="info-group">
                         <h3>Platforms:</h3>
                         <div class="platform-tags">
-                            <% game.platform.forEach(platform => { %>
-                                <span class="tag"><%= platform %></span>
-                            <% }) %>
+                            <% if (game.platform && game.platform.length > 0) { %>
+                                <% game.platform.forEach(platform => { %>
+                                    <span class="tag"><%= platform %></span>
+                                <% }) %>
+                            <% } else { %>
+                                <span>No platforms specified</span>
+                            <% } %>
                         </div>
                     </div>
 
                     <div class="info-group">
                         <h3>Genre:</h3>
                         <div class="genre-tags">
-                            <% game.genre.forEach(g => { %>
-                                <span class="tag"><%= g %></span>
-                            <% }) %>
+                            <% if (game.genre) { %>
+                                <span class="tag"><%= game.genre %></span>
+                            <% } else { %>
+                                <span>No genre specified</span>
+                            <% } %>
                         </div>
                     </div>
 

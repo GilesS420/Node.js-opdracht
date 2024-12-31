@@ -88,10 +88,18 @@ router.get('/:id', async (req, res) => {
     try {
         const game = await Game.findById(req.params.id);
         const achievements = await Achievement.find({ game: req.params.id });
-        res.render('games/detail', { game, achievements });
+        
+        if (!game) {
+            return res.status(404).send('Game not found');
+        }
+
+        res.render('games/detail', { 
+            game: game,
+            achievements: achievements || [] // Ensure achievements is always an array
+        });
     } catch (error) {
-        console.error('Error fetching game details:', error);
-        res.redirect('/games');
+        console.error('Error:', error);
+        res.status(500).send('Server Error');
     }
 });
 
