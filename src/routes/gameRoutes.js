@@ -38,7 +38,8 @@ function checkFileType(file, cb) {
 // Show all games
 router.get('/', async (req, res) => {
     try {
-        const games = await Game.find();
+        const games = await Game.find()
+            .sort({ createdAt: -1 });  // Sort by creation date, newest first
         res.render('games', { games });
     } catch (error) {
         res.status(500).send('Error fetching games');

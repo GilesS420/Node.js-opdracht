@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>All Achievements - Achievement Tracker</title>
+    <title>Achievements - Achievement Tracker</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -10,34 +10,110 @@
     <div class="container">
         <h1>All Achievements</h1>
         
-        <div class="achievements-grid">
-            <% if (achievements && achievements.length > 0) { %>
-                <% achievements.forEach(achievement => { %>
-                    <div class="achievement-card">
-                        <% if (achievement.imageUrl) { %>
-                            <img src="<%= achievement.imageUrl %>" alt="<%= achievement.name %>">
-                        <% } %>
-                        <h3><%= achievement.name %></h3>
-                        <p><%= achievement.description %></p>
-                        <div class="achievement-meta">
-                            <span class="game-title">Game: <a href="/games/<%= achievement.game._id %>"><%= achievement.game.title %></a></span>
-                            <span class="points">Points: <%= achievement.points %></span>
-                            <span class="difficulty <%= achievement.difficulty.toLowerCase() %>">
-                                <%= achievement.difficulty %>
-                            </span>
-                        </div>
-                        <div class="card-actions">
-                            <a href="/achievements/<%= achievement._id %>/edit" class="btn btn-edit">Edit</a>
-                            <form action="/achievements/<%= achievement._id %>?_method=DELETE" method="POST" style="display: inline;">
-                                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
-                        </div>
+        <!-- Add search form -->
+        <div class="search-form">
+            <input type="text" id="searchName" placeholder="Search by name...">
+            <select id="searchDifficulty">
+                <option value="">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+                <option value="Expert">Expert</option>
+            </select>
+            <select id="searchPoints">
+                <option value="">All Points</option>
+                <option value="5">5 Points</option>
+                <option value="10">10 Points</option>
+                <option value="15">15 Points</option>
+                <option value="20">20 Points</option>
+            </select>
+        </div>
+
+        <div id="achievementsContainer" class="achievements-grid">
+            <% achievements.forEach(achievement => { %>
+                <div class="achievement-card">
+                    <h3><%= achievement.name %></h3>
+                    <p><%= achievement.description %></p>
+                    <p>Game: <span class="game-name"><%= achievement.game ? achievement.game.title : 'Unknown' %></span></p>
+                    <p>Points: <span class="points"><%= achievement.points %></span></p>
+                    <span class="difficulty <%= achievement.difficulty.toLowerCase() %>">
+                        <%= achievement.difficulty %>
+                    </span>
+                    <div class="card-actions">
+                        <a href="/achievements/<%= achievement._id %>/edit" class="btn btn-edit">Edit</a>
+                        <form action="/achievements/<%= achievement._id %>?_method=DELETE" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
                     </div>
-                <% }) %>
-            <% } else { %>
-                <p>No achievements found.</p>
-            <% } %>
+                </div>
+            <% }); %>
         </div>
     </div>
+
+    <script>
+        // Add event listeners for real-time search
+        document.getElementById('searchName').addEventListener('input', debounce(searchAchievements, 300));
+        document.getElementById('searchDifficulty').addEventListener('change', searchAchievements);
+        document.getElementById('searchPoints').addEventListener('change', searchAchievements);
+
+        // Debounce function to prevent too many API calls
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        async function searchAchievements() {
+            const name = document.getElementById('searchName').value;
+            const difficulty = document.getElementById('searchDifficulty').value;
+            const points = document.getElementById('searchPoints').value;
+
+            // Build query string
+            const params = new URLSearchParams();
+            if (name) params.append('name', name);
+            if (difficulty) params.append('difficulty', difficulty);
+            if (points) params.append('points', points);
+
+            try {
+                const response = await fetch(`/api/achievements/search?${params.toString()}`);
+                const data = await response.json();
+                
+                const container = document.getElementById('achievementsContainer');
+                
+                if (data.achievements && data.achievements.length > 0) {
+                    container.innerHTML = data.achievements.map(achievement => `
+                        <div class="achievement-card">
+                            <h3>${achievement.name}</h3>
+                            <p>${achievement.description}</p>
+                            <p>Game: <span class="game-name">${achievement.game ? achievement.game.title : 'Unknown'}</span></p>
+                            <p>Points: <span class="points">${achievement.points}</span></p>
+                            <span class="difficulty ${achievement.difficulty.toLowerCase()}">
+                                ${achievement.difficulty}
+                            </span>
+                            <div class="card-actions">
+                                <a href="/achievements/${achievement._id}/edit" class="btn btn-edit">Edit</a>
+                                <form action="/achievements/${achievement._id}?_method=DELETE" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p>No achievements found matching your search criteria.</p>';
+                }
+            } catch (error) {
+                console.error('Error searching achievements:', error);
+            }
+        }
+
+        // Load all achievements initially
+        searchAchievements();
+    </script>
 </body>
 </html> 

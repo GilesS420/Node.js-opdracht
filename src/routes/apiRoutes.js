@@ -15,16 +15,10 @@ router.get('/api/games', async (req, res) => {
         const offset = parseInt(req.query.offset) || 0;
         
         const games = await Game.find()
+            .sort({ createdAt: -1 })  // Sort by creation date, newest first
             .skip(offset)
             .limit(limit)
-            .lean();  // Convert to plain JavaScript objects
-        
-        // Ensure imageUrl is complete
-        games.forEach(game => {
-            if (game.imageUrl && !game.imageUrl.startsWith('http')) {
-                game.imageUrl = game.imageUrl; // The imageUrl should already be correct from the database
-            }
-        });
+            .lean();
 
         const total = await Game.countDocuments();
         
@@ -44,25 +38,33 @@ router.get('/api/games', async (req, res) => {
 router.get('/api/achievements/search', async (req, res) => {
     try {
         const query = {};
-        
+
+        // Search by name (case-insensitive)
         if (req.query.name) {
             query.name = { $regex: req.query.name, $options: 'i' };
         }
-        
+
+        // Filter by difficulty
         if (req.query.difficulty) {
             query.difficulty = req.query.difficulty;
         }
-        
+
+        // Filter by points
         if (req.query.points) {
             query.points = parseInt(req.query.points);
         }
-        
+
         const achievements = await Achievement.find(query)
-            .populate('game', 'title')
-            .select('name description points difficulty');
-            
-        res.json(achievements);
+            .populate('game', 'title')  // Include game title
+            .lean();
+
+        res.json({
+            achievements,
+            count: achievements.length,
+            filters: req.query
+        });
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ error: error.message });
     }
 });

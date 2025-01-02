@@ -8,31 +8,81 @@
     <%- include('partials/nav') %>
     
     <div class="container">
-        <h1>Achievements List</h1>
-        <div class="achievements-grid">
-            <% if (achievements && achievements.length > 0) { %>
-                <% achievements.forEach(achievement => { %>
-                    <div class="achievement-card">
-                        <div class="achievement-header">
-                            <h3><%= achievement.name %></h3>
-                            <span class="difficulty <%= achievement.difficulty.toLowerCase() %>">
-                                <%= achievement.difficulty %>
-                            </span>
-                        </div>
-                        <p class="description"><%= achievement.description %></p>
-                        <div class="achievement-footer">
-                            <span class="points">Points: <%= achievement.points %></span>
-                            <% if (achievement.game) { %>
-                                <span class="game-name">Game: <%= achievement.game.title %></span>
-                            <% } %>
-                            <span class="rarity">Rarity: <%= achievement.rarity %>%</span>
-                        </div>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <p>No achievements found yet.</p>
-            <% } %>
+        <div class="header-actions">
+            <h1>Achievements</h1>
+            <div class="search-form">
+                <input type="text" id="searchName" placeholder="Search by name...">
+                <select id="searchDifficulty">
+                    <option value="">All Difficulties</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                    <option value="Expert">Expert</option>
+                </select>
+                <select id="searchPoints">
+                    <option value="">All Points</option>
+                    <option value="5">5 Points</option>
+                    <option value="10">10 Points</option>
+                    <option value="15">15 Points</option>
+                    <option value="20">20 Points</option>
+                </select>
+                <button onclick="searchAchievements()" class="btn">Search</button>
+            </div>
+        </div>
+
+        <div id="achievementsContainer" class="achievements-grid">
+            <!-- Achievements will be loaded here -->
         </div>
     </div>
+
+    <script>
+        async function searchAchievements() {
+            const name = document.getElementById('searchName').value;
+            const difficulty = document.getElementById('searchDifficulty').value;
+            const points = document.getElementById('searchPoints').value;
+
+            // Build query string
+            const params = new URLSearchParams();
+            if (name) params.append('name', name);
+            if (difficulty) params.append('difficulty', difficulty);
+            if (points) params.append('points', points);
+
+            try {
+                const response = await fetch(`/api/achievements/search?${params.toString()}`);
+                const data = await response.json();
+                
+                const container = document.getElementById('achievementsContainer');
+                
+                if (data.achievements && data.achievements.length > 0) {
+                    container.innerHTML = data.achievements.map(achievement => `
+                        <div class="achievement-card">
+                            ${achievement.imageUrl ? 
+                                `<img src="${achievement.imageUrl}" alt="${achievement.name}" class="achievement-image">` 
+                                : ''
+                            }
+                            <h3>${achievement.name}</h3>
+                            <p>Game: ${achievement.game ? achievement.game.title : 'Unknown'}</p>
+                            <p>Difficulty: ${achievement.difficulty}</p>
+                            <p>Points: ${achievement.points}</p>
+                            <div class="card-actions">
+                                <a href="/achievements/${achievement._id}" class="btn">Details</a>
+                                <a href="/achievements/${achievement._id}/edit" class="btn btn-edit">Edit</a>
+                                <form action="/achievements/${achievement._id}?_method=DELETE" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p>No achievements found matching your search criteria.</p>';
+                }
+            } catch (error) {
+                console.error('Error searching achievements:', error);
+            }
+        }
+
+        // Load all achievements initially
+        searchAchievements();
+    </script>
 </body>
 </html> 
