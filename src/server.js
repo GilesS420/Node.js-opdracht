@@ -23,12 +23,10 @@ mongoose.connect('mongodb+srv://sct:iS8HtDdXKHyfjahI@cluster0.mg20q.mongodb.net/
     });
 
 // Routes
-const userRoutes = require('./routes/userRoutes');
 const gameRoutes = require('./routes/gameRoutes');
 const achievementRoutes = require('./routes/achievementRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 
-app.use('/api/users', userRoutes);
 app.use('/games', gameRoutes);
 app.use('/achievements', achievementRoutes);
 app.use('/', apiRoutes);
