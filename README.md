@@ -9,17 +9,17 @@ A Node.js API for tracking video game achievements. Users can manage games and t
 - Basic data validation
 - Image upload support for games
 
-## Prerequisites
+## What you need
 - Node.js (v14 or higher)
 - MongoDB Atlas account or local MongoDB installation
-- npm or yarn package manager
+- npm 
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/achievement-tracker.git
-cd achievement-tracker
+git clone https://github.com/yourusername/achievement-tracker.git](https://github.com/GilesS420/Node.js-opdracht.git
+cd Nodejs-project
 ```
 
 2. Install dependencies:
@@ -45,10 +45,6 @@ Example connection string format:
 mongodb+srv://username:password@cluster.mongodb.net/database
 ```
 
-5. Create required directories:
-```bash
-mkdir -p public/uploads/games
-```
 
 ## Database Setup
 
@@ -68,14 +64,10 @@ This will populate your database with:
 npm start
 ```
 
-2. For development with auto-reload:
-```bash
-npm run dev
-```
 
 3. Access the application:
-- Open `http://localhost:3000` in your browser
-- API documentation available at `http://localhost:3000/api`
+- Open `http://localhost:3000` in your browser Here you will find the API documentation click on games or achievments to see the functioning of the application
+
 
 ## API Endpoints
 
@@ -93,19 +85,6 @@ npm run dev
 - `PUT /achievements/:id` - Update achievement
 - `DELETE /achievements/:id` - Delete achievement
 
-## Project Structure
-```
-src/
-├── models/          # Database models
-├── routes/          # Route handlers
-├── views/           # EJS templates
-├── seeders/         # Database seeders
-└── server.js        # Main application file
-
-public/
-├── css/            # Stylesheets
-└── uploads/        # Uploaded images
-```
 
 ## Validation
 - Required fields cannot be empty
@@ -114,20 +93,6 @@ public/
 - Game titles must be unique
 - Image uploads are limited to 5MB
 
-## Error Handling
-The API includes basic error handling for:
-- Invalid MongoDB IDs
-- Missing required fields
-- Invalid data types
-- File upload errors
-- Database connection issues
+## Known errors
+- Images might not be visible
 
-## Contributing
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details
