@@ -1,23 +1,20 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Game = require('../models/Game');
 const Achievement = require('../models/Achievement');   
 
-mongoose.connect('mongodb+srv://sct:iS8HtDdXKHyfjahI@cluster0.mg20q.mongodb.net/project_api', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
-    console.log('Connected to MongoDB Atlas successfully');
-    return seedDatabase();
-})
-.then(() => {
-    console.log('Database seeded successfully!');
-    return mongoose.connection.close();
-})
-.catch((error) => {
-    console.error('Error:', error);
-    return mongoose.connection.close();
-});
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log('Connected to MongoDB Atlas successfully');
+        return seedDatabase();
+    })
+    .then(() => {
+        console.log('Database seeded successfully!');
+        return mongoose.connection.close();
+    })
+    .catch((error) => {
+        console.error('MongoDB connection error:', error);
+    });
 
 const games = [
     {

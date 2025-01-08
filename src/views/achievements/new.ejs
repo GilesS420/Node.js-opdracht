@@ -9,60 +9,52 @@
     
     <div class="container">
         <h1>Add Achievement for <%= game.title %></h1>
-        <form action="/achievements/<%= game._id %>" method="POST" class="form" enctype="multipart/form-data">
+
+        <% if (typeof error !== 'undefined') { %>
+            <div class="alert alert-error">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/achievements/<%= game._id %>" method="POST" class="form">
             <div class="form-group">
                 <label for="name">Achievement Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" 
+                    value="<%= typeof formData !== 'undefined' ? formData.name : '' %>" 
+                    required>
             </div>
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description" required
+                    placeholder="Description must be at least 10 characters long"
+                ><%= typeof formData !== 'undefined' ? formData.description : '' %></textarea>
             </div>
 
             <div class="form-group">
-                <label for="points">Points (5-20):</label>
-                <input 
-                    type="number" 
-                    id="points" 
-                    name="points" 
-                    min="5" 
-                    max="20" 
-                    value="5"
-                    required
-                >
-                <small>Achievement points must be between 5 and 20</small>
+                <label for="points">Points:</label>
+                <select id="points" name="points" required>
+                    <option value="5" <%= typeof formData !== 'undefined' && formData.points === '5' ? 'selected' : '' %>>5</option>
+                    <option value="10" <%= typeof formData !== 'undefined' && formData.points === '10' ? 'selected' : '' %>>10</option>
+                    <option value="15" <%= typeof formData !== 'undefined' && formData.points === '15' ? 'selected' : '' %>>15</option>
+                    <option value="20" <%= typeof formData !== 'undefined' && formData.points === '20' ? 'selected' : '' %>>20</option>
+                </select>
             </div>
 
             <div class="form-group">
-                <label>Difficulty:</label>
-                <div class="difficulty-options">
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="Easy" required>
-                        <span class="difficulty easy">Easy</span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="Medium" required>
-                        <span class="difficulty medium">Medium</span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="Hard" required>
-                        <span class="difficulty hard">Hard</span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="Expert" required>
-                        <span class="difficulty expert">Expert</span>
-                    </label>
-                </div>
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="Easy" <%= typeof formData !== 'undefined' && formData.difficulty === 'Easy' ? 'selected' : '' %>>Easy</option>
+                    <option value="Medium" <%= typeof formData !== 'undefined' && formData.difficulty === 'Medium' ? 'selected' : '' %>>Medium</option>
+                    <option value="Hard" <%= typeof formData !== 'undefined' && formData.difficulty === 'Hard' ? 'selected' : '' %>>Hard</option>
+                    <option value="Expert" <%= typeof formData !== 'undefined' && formData.difficulty === 'Expert' ? 'selected' : '' %>>Expert</option>
+                </select>
             </div>
 
-            <div class="form-group">
-                <label for="achievementImage">Achievement Image:</label>
-                <input type="file" id="achievementImage" name="achievementImage" accept="image/*">
-            </div>
+            <input type="hidden" name="game" value="<%= game._id %>">
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-edit">Add Achievement</button>
+                <button type="submit" class="btn btn-add">Add Achievement</button>
                 <a href="/games/<%= game._id %>" class="btn btn-cancel">Cancel</a>
             </div>
         </form>

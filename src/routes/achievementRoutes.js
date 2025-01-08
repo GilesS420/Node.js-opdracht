@@ -32,45 +32,61 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Show achievement form (now starts with /games)
+// GET route for new achievement form
 router.get('/new/:gameId', async (req, res) => {
     try {
         const game = await Game.findById(req.params.gameId);
-        res.render('achievements/new', { game });
+        if (!game) {
+            return res.status(404).send('Game not found');
+        }
+        res.render('achievements/new', { 
+            game: game,
+            formData: {},
+            error: null
+        });
     } catch (error) {
-        res.redirect('/games');
+        res.status(500).send(error.message);
     }
 });
 
-// Create achievement
-router.post('/:gameId', upload.single('achievementImage'), async (req, res) => {
+// POST route to create new achievement
+router.post('/:gameId', async (req, res) => {
     try {
-        // Validate points
-        const points = parseInt(req.body.points);
-        if (points < 5 || points > 20) {
-            throw new Error('Points must be between 5 and 20');
+        const game = await Game.findById(req.params.gameId);
+        if (!game) {
+            return res.status(404).send('Game not found');
         }
 
         const achievementData = {
             name: req.body.name,
             description: req.body.description,
-            points: points,
+            points: req.body.points,
             difficulty: req.body.difficulty,
-            game: req.params.gameId,
-            imageUrl: req.file ? `/uploads/achievements/${req.file.filename}` : ''
+            game: req.params.gameId
         };
 
         const achievement = new Achievement(achievementData);
+        
+        const validationError = achievement.validateSync();
+        if (validationError) {
+            return res.render('achievements/new', {
+                game: game,
+                formData: req.body,
+                error: Object.values(validationError.errors)[0].message
+            });
+        }
+
         await achievement.save();
-
-        await Game.findByIdAndUpdate(req.params.gameId, {
-            $inc: { totalAchievements: 1 }
-        });
-
         res.redirect(`/games/${req.params.gameId}`);
+
     } catch (error) {
         console.error('Error creating achievement:', error);
-        res.redirect(`/games/${req.params.gameId}`);
+        const game = await Game.findById(req.params.gameId);
+        res.render('achievements/new', {
+            game: game,
+            formData: req.body,
+            error: error.message
+        });
     }
 });
 
@@ -118,18 +134,17 @@ router.put('/:id', upload.single('achievementImage'), async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const achievement = await Achievement.findById(req.params.id);
-        const gameId = achievement.game;
+        if (!achievement) {
+            return res.status(404).send('Achievement not found');
+        }
 
-        await achievement.remove();
+        const gameId = achievement.game; // Store the game ID before deletion
+        await Achievement.findByIdAndDelete(req.params.id);
         
-        // Update game's total achievements
-        await Game.findByIdAndUpdate(gameId, {
-            $inc: { totalAchievements: -1 }
-        });
-
         res.redirect(`/games/${gameId}`);
     } catch (error) {
-        res.redirect('/games');
+        console.error('Error deleting achievement:', error);
+        res.status(500).send(error.message);
     }
 });
 

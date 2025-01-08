@@ -12,6 +12,13 @@
     
     <div class="container">
         <h1>Edit Game: <%= game.title %></h1>
+        
+        <% if (typeof error !== 'undefined') { %>
+            <div class="alert alert-error">
+                <%= error %>
+            </div>
+        <% } %>
+
         <form action="/games/<%= game._id %>?_method=PUT" method="POST" class="form" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title:</label>
@@ -34,7 +41,7 @@
 
             <div class="form-group">
                 <label for="genre">Genre:</label>
-                <input type="text" id="genre" name="genre" value="<%= game.genre || '' %>" required>
+                <input type="text" id="genre" name="genre" value="<%= typeof game.genre === 'string' ? game.genre : (Array.isArray(game.genre) ? game.genre.join(', ') : '') %>" required>
             </div>
 
             <div class="form-group">
@@ -54,7 +61,8 @@
             <div class="form-group">
                 <label for="releaseDate">Release Date:</label>
                 <input type="date" id="releaseDate" name="releaseDate" 
-                    value="<%= game.releaseDate ? game.releaseDate.toISOString().split('T')[0] : '' %>">
+                    value="<%= game.releaseDate ? new Date(game.releaseDate).toISOString().split('T')[0] : '' %>"
+                    required>
             </div>
 
             <div class="form-actions">

@@ -4,20 +4,20 @@ const achievementSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Name is required'],
-    trim: true,
     minlength: [2, 'Name must be at least 2 characters long']
   },
   description: {
     type: String,
     required: [true, 'Description is required'],
-    trim: true,
     minlength: [10, 'Description must be at least 10 characters long']
   },
   points: {
     type: Number,
     required: [true, 'Points are required'],
-    min: [0, 'Points cannot be negative'],
-    max: [100, 'Points cannot exceed 100']
+    enum: {
+      values: [5, 10, 15, 20],
+      message: 'Points must be either 5, 10, 15, or 20'
+    }
   },
   difficulty: {
     type: String,
